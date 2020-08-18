@@ -33,6 +33,22 @@ namespace CsetAnalytics.DomainModels
             {
                 database.CreateCollection(collectionName);
             }
+
+            if (collectionName == "sector_industries")
+            {
+                // SeedSectorIndustries(database);
+            }
+        }
+
+        private static void SeedSectorIndustries(IMongoDatabase database)
+        {
+            var collection = database.GetCollection<BsonDocument>("sector_industries");
+
+            // var document = new BsonDocument {}
+
+            // Format for sector industries data:
+
+            // {sectorId, sectorName, [{industryId, IndustryName} ... ]}
         }
     }
 }
