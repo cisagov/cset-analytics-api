@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.10.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CsetAnalytics.DomainModels\CsetAnalytics.DomainModels.csproj" />
+    <ProjectReference Include="..\CsetAnalytics.Interfaces\CsetAnalytics.Interfaces.csproj" />
+    <ProjectReference Include="..\CsetAnalytics.ViewModels\CsetAnalytics.ViewModels.csproj" />
+  </ItemGroup>
+
+</Project>

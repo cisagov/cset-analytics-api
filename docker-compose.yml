@@ -1,37 +1,25 @@
----
-version: "3.7"
-
-# This docker-compose file is used to build and test the container
-
-secrets:
-  quote_txt:
-    file: ./src/secrets/quote.txt
-
+version: '3'
 services:
-  example:
-    # Run the container normally
-    build:
-      # VERSION must be specified on the command line:
-      # e.g., --build-arg VERSION=0.0.1
-      context: .
-      dockerfile: Dockerfile
-    image: cisagov/example
-    init: true
-    restart: "no"
-    environment:
-      - ECHO_MESSAGE=Hello World from docker-compose!
-    ports:
-      - target: "8080"
-        published: "8080"
-        protocol: tcp
-        mode: host
-    secrets:
-      - source: quote_txt
-        target: quote.txt
-
-  example-version:
-    # Run the container to collect version information
-    image: cisagov/example
-    init: true
-    restart: "no"
-    command: --version
+    # The Postgres Database
+    cset-analytics-postgres:
+        container_name: cset-analytics-postgres
+        env_file: .env
+        image: postgres:latest
+        ports:
+        - "5432:5432"
+        volumes:
+            # relative mounts do not work with Windows
+            # Ownership issues with postgres service
+            - pgdata:/var/lib/postgresql/data
+    # The dotnet api
+    cset-analytics-api:
+        container_name: cset-analytics-api
+        build: .
+        depends_on:
+        - cset-analytics-postgres
+        env_file: .env
+        image: cset-analytics-api:1.0
+        ports:
+        - "44397:443"
+volumes:
+    pgdata:
