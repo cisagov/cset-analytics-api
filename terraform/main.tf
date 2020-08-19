@@ -53,7 +53,7 @@ locals {
   environment = {
     "DB_HOST" : module.documentdb.endpoint,
     "DB_PORT" : 27017,
-    "DB_PARAMS": "?ssl=true&ssl_ca_certs=rds-combined-ca-bundle.pem&retryWrites=false"
+    "DB_PARAMS": "?ssl=true&ssl_ca_certs=/app/rds-combined-ca-bundle.pem&retryWrites=false"
   }
 
   secrets = {
