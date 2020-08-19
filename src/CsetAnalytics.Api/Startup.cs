@@ -24,6 +24,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using System.Net.Security;
 
 
 namespace CsetAnalytics.Api
@@ -42,6 +45,31 @@ namespace CsetAnalytics.Api
                 .AddJsonFile($"appsettings.{hostingEnvironment.EnvironmentName}.json", optional: true,
                     reloadOnChange: true)
                 .AddEnvironmentVariables();
+
+            if (Environment.GetEnvironmentVariable("MONGO_TYPE") == "DOCUMENTDB")
+            {
+                Console.WriteLine("Mongo Type Set to DocumentDB");
+                String pathToCAFile = "/app/rds-combined-ca-bundle.pem";
+
+                X509Store localTrustStore = new X509Store(StoreName.Root);
+                X509Certificate2Collection certificateCollection = new X509Certificate2Collection();
+                certificateCollection.Import(pathToCAFile);
+                try
+                {
+                    localTrustStore.Open(OpenFlags.ReadWrite);
+                    localTrustStore.AddRange(certificateCollection);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Root certificate import failed: " + ex.Message);
+                    throw;
+                }
+                finally
+                {
+                    localTrustStore.Close();
+                }
+            }
+
             Configuration = configuration;
             this.HostingEnvironment = hostingEnvironment;
             _config = builder.Build();
