@@ -52,13 +52,13 @@ namespace CsetAnalytics.Business.Dashboard
 
             //go through get the sum total of all
             //get the sum of yes and alts
-            //then calc the percent of each assessment and 
+            //then calc the percent of each assessment and
             //sector average.
 
             Dictionary<string, QuickSum> sums = new Dictionary<string, QuickSum>();
             foreach (var a in tempQuery)
             {
-                
+
                 QuickSum quickSum;
                 if (sums.TryGetValue(a.Assessment_Id, out quickSum))
                 {
@@ -115,7 +115,7 @@ namespace CsetAnalytics.Business.Dashboard
 
             ////go through get the sum total of all
             ////get the sum of yes and alts
-            ////then calc the percent of each assessment and 
+            ////then calc the percent of each assessment and
             ////sector average.
 
             Dictionary<string, QuickSum> sums = new Dictionary<string, QuickSum>();
@@ -151,7 +151,7 @@ namespace CsetAnalytics.Business.Dashboard
             average = average / (sums.Values.Count() == 0 ? 1 : sums.Values.Count());
 
             return new Series() { name = IndustryAverageName, value = average * 100 };
-           
+
         }
 
         private Series GetMyAnalytics(string myAssessment_Id)
@@ -178,7 +178,7 @@ namespace CsetAnalytics.Business.Dashboard
 
             //go through get the sum total of all
             //get the sum of yes and alts
-            //then calc the percent of each assessment and 
+            //then calc the percent of each assessment and
             //sector average.
 
             Dictionary<string, QuickSum> sums = new Dictionary<string, QuickSum>();
@@ -220,10 +220,10 @@ namespace CsetAnalytics.Business.Dashboard
         {
             //var assessment =  _context.Assessments.Where(x => x.Assessment_Id == assessment_id).FirstOrDefault();
             var assessment = await _context.Assessments.FindAsync(a => a.Assessment_Id == assessment_id).Result.FirstOrDefaultAsync();
-            
+
             if(assessment != null)
             {
-                
+
                 var sectionAnalytics = GetSectorAnalytics(assessment.SectorId);
                 var industryAnalytics = GetIndustryAnalytics(assessment.SectorId,assessment.IndustryId);
                 var myAnalytics = GetMyAnalytics(assessment_id);
@@ -251,7 +251,7 @@ namespace CsetAnalytics.Business.Dashboard
         public string assesment_id { get; set; }
         public int TotalCount { get; set; }
         public int YesAltCount { get; set; }
-        public double Percentage { 
+        public double Percentage {
             get
             {
                 return (double) YesAltCount / (double) TotalCount;

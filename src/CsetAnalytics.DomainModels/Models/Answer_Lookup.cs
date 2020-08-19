@@ -9,7 +9,7 @@ namespace CsetAnalytics.DomainModels.Models
 {
     public partial class Answer_Lookup
     {
-        
+
         public Answer_Lookup() {}
 
         [BsonId]

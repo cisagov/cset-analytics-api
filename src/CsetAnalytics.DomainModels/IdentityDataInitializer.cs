@@ -22,9 +22,9 @@ namespace CsetAnalytics.DomainModels
                 await CreateCollection(database, "analytics_questionanswer");
                 await CreateCollection(database, "sector_industries");
             }
-            
+
         }
-        
+
         private static async Task CreateCollection(IMongoDatabase database, string collectionName)
         {
             var filter = new BsonDocument("name", collectionName);

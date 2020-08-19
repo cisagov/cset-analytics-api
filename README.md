@@ -1,24 +1,24 @@
-# skeleton-docker 💀🐳 #
+# skeleton-docker 💀🐳
 
 [![GitHub Build Status](https://github.com/cisagov/skeleton-docker/workflows/build/badge.svg)](https://github.com/cisagov/skeleton-docker/actions)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/cisagov/skeleton-docker.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/cisagov/skeleton-docker/alerts/)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/cisagov/skeleton-docker.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/cisagov/skeleton-docker/context:python)
 
-## Docker Image ##
+## Docker Image
 
 ![MicroBadger Layers](https://img.shields.io/microbadger/layers/cisagov/example.svg)
 ![MicroBadger Size](https://img.shields.io/microbadger/image-size/cisagov/example.svg)
 
 This is a docker skeleton project that can be used to quickly get a
 new [cisagov](https://github.com/cisagov) GitHub docker project
-started.  This skeleton project contains [licensing
+started. This skeleton project contains [licensing
 information](LICENSE), as well as [pre-commit hooks](https://pre-commit.com)
 and [GitHub Actions](https://github.com/features/actions) configurations
 appropriate for docker containers and the major languages that we use.
 
-## Usage ##
+## Usage
 
-### Install ###
+### Install
 
 Pull `cisagov/example` from the Docker repository:
 
@@ -30,42 +30,42 @@ Or build `cisagov/example` from source:
     cd skeleton-docker
     docker-compose build --build-arg VERSION=0.0.1
 
-### Run ###
+### Run
 
     docker-compose run --rm example
 
-## Ports ##
+## Ports
 
 This container exposes the following ports:
 
-| Port  | Protocol | Service  |
-|-------|----------|----------|
-| 8080  | TCP      | http     |
+| Port | Protocol | Service |
+| ---- | -------- | ------- |
+| 8080 | TCP      | http    |
 
-## Environment Variables ##
+## Environment Variables
 
-| Variable      | Default Value                 | Purpose      |
-|---------------|-------------------------------|--------------|
-| ECHO_MESSAGE  | `Hello World from Dockerfile` | Text to echo |
+| Variable     | Default Value                 | Purpose      |
+| ------------ | ----------------------------- | ------------ |
+| ECHO_MESSAGE | `Hello World from Dockerfile` | Text to echo |
 
-## Secrets ##
+## Secrets
 
-| Filename      | Purpose              |
-|---------------|----------------------|
-| quote.txt     | Secret text to echo  |
+| Filename  | Purpose             |
+| --------- | ------------------- |
+| quote.txt | Secret text to echo |
 
-## Volumes ##
+## Volumes
 
 | Mount point | Purpose        |
-|-------------|----------------|
+| ----------- | -------------- |
 | /var/log    | logging output |
 
-## Contributing ##
+## Contributing
 
-We welcome contributions!  Please see [here](CONTRIBUTING.md) for
+We welcome contributions! Please see [here](CONTRIBUTING.md) for
 details.
 
-## License ##
+## License
 
 This project is in the worldwide [public domain](LICENSE).
 

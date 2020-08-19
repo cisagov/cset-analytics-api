@@ -9,6 +9,6 @@ namespace CsetAnalytics.ViewModels
     {
         public List<AnalyticQuestionViewModel> QuestionAnswers { get; set; }
         public AnalyticAssessmentViewModel Assessment { get; set; }
-     
+
     }
 }

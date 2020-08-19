@@ -5,7 +5,7 @@ using CsetAnalytics.DomainModels.Models;
 using CsetAnalytics.Interfaces.Analytics;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
-using MongoDB.Driver; 
+using MongoDB.Driver;
 
 
 namespace CsetAnalytics.Business.Analytics

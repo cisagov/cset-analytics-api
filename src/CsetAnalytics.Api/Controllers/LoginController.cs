@@ -27,7 +27,7 @@ namespace CsetAnalytics.Api.Controllers
         private readonly IConfiguration config;
         private readonly CsetContext context;
         private readonly IUserBusiness userBusiness;
-        
+
         public LoginController(IConfiguration config, CsetContext context, IUserBusiness userBusiness)
         {
             this.config = config;

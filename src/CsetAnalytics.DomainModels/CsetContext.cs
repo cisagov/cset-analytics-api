@@ -30,7 +30,7 @@ namespace CsetAnalytics.DomainModels
                 return _database.GetCollection<Assessment>(_settings.AssessmentCollectionName).AsQueryable<Assessment>();
             }
         }
-        
+
         public IMongoCollection<Assessment> Assessments
         {
             get
@@ -85,9 +85,9 @@ namespace CsetAnalytics.DomainModels
 //        public virtual DbSet<Sector_Industry> Sector_Industries { get; set; }
 //        public DbSet<PasswordHistory> PasswordHistories { get; set; }
 //        public DbSet<Configuration> Configurations { get; set; }
-        
-        
-        
+
+
+
 //        public CsetContext(DbContextOptions<CsetContext> options) : base(options)
 //        {
 //        }
@@ -101,10 +101,10 @@ namespace CsetAnalytics.DomainModels
 //                .HasMany(e => e.AnalyticQuestionAnswers)
 //                .WithOne(e => e.Answer_Lookup).IsRequired()
 //                .OnDelete(DeleteBehavior.SetNull);
-            
+
 //            builder.Entity<PasswordHistory>().HasOne(c => c.ApplicationUser).WithMany(c => c.PasswordHistories).HasForeignKey(f => f.AspNetUserId).HasForeignKey(f => f.CreatedUserId);
 //            builder.Entity<AnalyticQuestionAnswer>().Ignore(c => c.Assessment_Id);
-//            builder.Entity<AnalyticQuestionAnswer>().HasOne(a => a.Assessment).WithMany(q => q.Questions).HasForeignKey(f => f.Assessment_Id).OnDelete(DeleteBehavior.Cascade);            
+//            builder.Entity<AnalyticQuestionAnswer>().HasOne(a => a.Assessment).WithMany(q => q.Questions).HasForeignKey(f => f.Assessment_Id).OnDelete(DeleteBehavior.Cascade);
 //            builder.Entity<Assessment>().HasOne(c => c.ApplicationUser).WithMany(c => c.Assessments).HasForeignKey(f=>f.AssessmentCreatorId);
 
 //            builder.Entity<Answer_Lookup>().HasData(
@@ -269,8 +269,8 @@ namespace CsetAnalytics.DomainModels
 //new Sector_Industry() { SectorId = 16, IndustryId = 77, IndustryName = "Publicly Owned Treatment Works" });
 
 
-//            builder.Entity<Sector_Industry>()                
-//                .HasMany(e => e.AnalyticDemographics)      
+//            builder.Entity<Sector_Industry>()
+//                .HasMany(e => e.AnalyticDemographics)
 //                .WithOne(e => e.Sector_Industry)
 //                .HasForeignKey(e => new { e.SectorId, e.IndustryId })
 //                .OnDelete(DeleteBehavior.SetNull);
