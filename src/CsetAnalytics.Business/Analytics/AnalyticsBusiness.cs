@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using CsetAnalytics.DomainModels;
 using CsetAnalytics.DomainModels.Models;
@@ -18,9 +19,10 @@ namespace CsetAnalytics.Business.Analytics
 
         public AnalyticsBusiness(MongoDbSettings settings)
         {
-           var client = new MongoClient(settings.ConnectionString);
+            Console.WriteLine(settings.ConnectionString);
+            var client = new MongoClient(settings.ConnectionString);
 
-           _context = new CsetContext(settings);
+            _context = new CsetContext(settings);
 
         }
 

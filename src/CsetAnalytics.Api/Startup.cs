@@ -70,8 +70,6 @@ namespace CsetAnalytics.Api
 
             services.AddAutoMapper(typeof(FactoryProfile));
 
-            ConfigureTrustStore();
-
             services.Configure<MongoDbSettings>(Configuration.GetSection(nameof(MongoDbSettings)));
             services.AddSingleton<MongoDbSettings>(sp => sp.GetRequiredService<IOptions<MongoDbSettings>>().Value);
 
@@ -107,8 +105,6 @@ namespace CsetAnalytics.Api
                 context.Response.Headers.Add("X-Xss-Protection", "1");
                 await next();
             });
-
-            ConfigureTrustStore();
 
             app.UseAuthentication();
             IMongoDbSettings dbSettings = settings;
