@@ -17,7 +17,8 @@ namespace CsetAnalytics.DomainModels
         public CsetContext(MongoDbSettings settings)
         {
             _settings = settings;
-            _client = new MongoClient(_settings.ConnectionString);
+            var clientSettings = MongoClientSettings.FromUrl(new MongoUrl(_settings.ConnectionString));
+            _client = new MongoClient(clientSettings);
             if (_client != null)
             {
                 _database = _client.GetDatabase(_settings.DatabaseName);

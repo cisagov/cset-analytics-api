@@ -19,7 +19,8 @@ namespace CsetAnalytics.Business.Analytics
 
         public AnalyticsBusiness(MongoDbSettings settings)
         {
-            var client = new MongoClient(settings.ConnectionString);
+            var clientSettings = MongoClientSettings.FromUrl(new MongoUrl(settings.ConnectionString));
+            var client = new MongoClient(clientSettings);
 
             _context = new CsetContext(settings);
 

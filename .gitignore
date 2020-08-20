@@ -6,6 +6,8 @@ __pycache__
 .env
 .terraform
 
+.vscode
+
 # User-specific files
 *.rsuser
 *.suo

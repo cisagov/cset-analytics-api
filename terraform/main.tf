@@ -53,7 +53,7 @@ locals {
   environment = {
     "DB_HOST" : module.documentdb.endpoint,
     "DB_PORT" : 27017,
-    "DB_PARAMS": "?ssl=true&replicaSet=rs0&readpreference=secondaryPreferred",
+    "DB_PARAMS": "?authSource=admin&ssl=true&readpreference=primary&tlsInsecure=true",
     "MONGO_TYPE": "DOCUMENTDB"
   }
 

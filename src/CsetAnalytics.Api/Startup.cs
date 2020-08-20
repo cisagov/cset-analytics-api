@@ -46,8 +46,6 @@ namespace CsetAnalytics.Api
                     reloadOnChange: true)
                 .AddEnvironmentVariables();
 
-            ConfigureTrustStore();
-
             Configuration = configuration;
             this.HostingEnvironment = hostingEnvironment;
             _config = builder.Build();
@@ -122,33 +120,6 @@ namespace CsetAnalytics.Api
             {
                 endpoints.MapControllers();
             });
-        }
-
-        private void ConfigureTrustStore()
-        {
-            if (Environment.GetEnvironmentVariable("MONGO_TYPE") == "DOCUMENTDB")
-            {
-                Console.WriteLine("Mongo Type Set to DocumentDB");
-                String pathToCAFile = "/app/rds-combined-ca-bundle.pem";
-
-                X509Store localTrustStore = new X509Store(StoreName.Root);
-                X509Certificate2Collection certificateCollection = new X509Certificate2Collection();
-                certificateCollection.Import(pathToCAFile);
-                try
-                {
-                    localTrustStore.Open(OpenFlags.ReadWrite);
-                    localTrustStore.AddRange(certificateCollection);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Root certificate import failed: " + ex.Message);
-                    throw;
-                }
-                finally
-                {
-                    localTrustStore.Close();
-                }
-            }
         }
     }
 }
