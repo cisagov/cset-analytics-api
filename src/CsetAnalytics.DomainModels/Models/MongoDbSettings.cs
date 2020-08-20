@@ -8,7 +8,7 @@ namespace CsetAnalytics.DomainModels.Models
     {
         public string AssessmentCollectionName { get; set; }
         public string AnalyticQuestionAnswerCollectionName { get; set; }
-        public string AnalyticDemographicsCollectionName { get; set; }
+        public string SectorIndustriesCollectionName { get; set; }
         public string ConnectionString { get; set; }
         public string DatabaseName { get; set; }
     }
@@ -17,7 +17,7 @@ namespace CsetAnalytics.DomainModels.Models
     {
         string AssessmentCollectionName { get; set; }
         string AnalyticQuestionAnswerCollectionName { get; set; }
-        string AnalyticDemographicsCollectionName { get; set; }
+        string SectorIndustriesCollectionName { get; set; }
         string ConnectionString { get; set; }
         string DatabaseName { get; set; }
     }

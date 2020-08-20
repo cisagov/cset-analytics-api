@@ -21,6 +21,7 @@ namespace CsetAnalytics.DomainModels.Models
 
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
         public string SectorId { get; set; }
 
         [Required]
@@ -37,8 +38,6 @@ namespace CsetAnalytics.DomainModels.Models
         {
         }
 
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
         public int IndustryId { get; set; }
 
         [Required]

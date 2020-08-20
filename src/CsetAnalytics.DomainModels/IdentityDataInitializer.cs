@@ -7,44 +7,45 @@ using CsetAnalytics.Enums;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace CsetAnalytics.DomainModels
 {
     public class DatabaseInitializer
     {
 
-        public static async Task SeedCollections(IMongoDbSettings settings)
+        public static void SeedCollections(IMongoDbSettings settings)
         {
             var client = new MongoClient(settings.ConnectionString);
             if (client != null)
             {
                 var database = client.GetDatabase(settings.DatabaseName);
-                await CreateCollection(database, "assessments");
-                await CreateCollection(database, "analytics_questionanswer");
-                await CreateCollection(database, "sector_industries");
+                CreateCollection(database, "assessments");
+                CreateCollection(database, "analytics_questionanswer");
+                CreateCollection(database, "sector_industries");
             }
             
         }
         
-        private static async Task CreateCollection(IMongoDatabase database, string collectionName)
+        private static void CreateCollection(IMongoDatabase database, string collectionName)
         {
             var filter = new BsonDocument("name", collectionName);
-            var collectionCursor = await database.ListCollectionsAsync(new ListCollectionsOptions { Filter = filter });
+            var collectionCursor = database.ListCollections(new ListCollectionsOptions { Filter = filter });
             if (!collectionCursor.Any())
             {
                 database.CreateCollection(collectionName);
 
+                if (collectionName == "sector_industries")
+                {
+                    SeedSectorIndustries(database);
+                }
             }
-
-            if (collectionName == "sector_industries")
-            {
-                await SeedSectorIndustries(database);
-            }
+           
         }
 
-        private static async Task SeedSectorIndustries(IMongoDatabase database)
+        private static void SeedSectorIndustries(IMongoDatabase database)
         {
-            var collection = database.GetCollection<BsonDocument>("sector_industries");
+            IMongoCollection<Sector> collection = database.GetCollection<Sector>("sector_industries");
 
            
             Industry[] sector1Industries = { new Industry() { IndustryId = 1, IndustryName = "Other" },
@@ -76,19 +77,97 @@ namespace CsetAnalytics.DomainModels
                                              new Industry() { IndustryId = 86, IndustryName = "Wireline" }
             };
 
+            Industry[] sector4Industires = { new Industry() { IndustryId = 14, IndustryName = "Electrical Equipment, Appliance and Component Manufacturing" },
+                                             new Industry() { IndustryId = 15, IndustryName = "Machinery Manufacturing" },
+                                             new Industry() { IndustryId = 16, IndustryName = "Other" },
+                                             new Industry() { IndustryId = 17, IndustryName = "Primary Metal Manufacturing" },
+                                             new Industry() { IndustryId = 18, IndustryName = "Transportation and Heavy Equipment Manufacturing" },
+                                             new Industry() { IndustryId = 87, IndustryName = "Manufacturing" },
+                                             new Industry() { IndustryId = 88, IndustryName = "Heavy Machinery Manufacturing" }
+            };
+
+            Industry[] sector5Industires = { new Industry() { IndustryId = 19, IndustryName = "Dams" },
+                                             new Industry() { IndustryId = 20, IndustryName = "Other" },
+                                             new Industry() { IndustryId = 21, IndustryName = "Private Hydropower Facilities in the US" },
+                                             new Industry() { IndustryId = 89, IndustryName = "Levees" },
+                                             new Industry() { IndustryId = 90, IndustryName = "Navigation Locks" },
+                                             new Industry() { IndustryId = 91, IndustryName = "Tailings and Waste Impoundments" },
+            };
+
+            Industry[] sector6Industries = { new Industry() { IndustryId = 22, IndustryName = "Aircraft Industry" },
+                                             new Industry() { IndustryId = 23, IndustryName = "Ammunition" },
+                                             new Industry() { IndustryId = 24, IndustryName = "Combat Vehicle" },
+                                             new Industry() { IndustryId = 25, IndustryName = "Communications" },
+                                             new Industry() { IndustryId = 26, IndustryName = "Defense Contractors" },
+                                             new Industry() { IndustryId = 27, IndustryName = "Electrical Industry Commodities" },
+                                             new Industry() { IndustryId = 28, IndustryName = "Electronics" },
+                                             new Industry() { IndustryId = 29, IndustryName = "Mechanical Industry Commodities" },
+                                             new Industry() { IndustryId = 30, IndustryName = "Missile Industry" },
+                                             new Industry() { IndustryId = 31, IndustryName = "Other" },
+                                             new Industry() { IndustryId = 32, IndustryName = "Research and Development Facilities" },
+                                             new Industry() { IndustryId = 33, IndustryName = "Shipbuilding Industry" },
+                                             new Industry() { IndustryId = 34, IndustryName = "Space" },
+                                             new Industry() { IndustryId = 35, IndustryName = "Structural Industry Commodities" },
+                                             new Industry() { IndustryId = 36, IndustryName = "Troop Support" },
+                                             new Industry() { IndustryId = 37, IndustryName = "Weapons" },
+            };
+
+            Industry[] sector7Industries = { new Industry() { IndustryId = 38, IndustryName = "Emergency Management" },
+                                             new Industry() { IndustryId = 39, IndustryName = "Emergency Medical Services" },
+                                             new Industry() { IndustryId = 40, IndustryName = "Fire and Rescue Services" },
+                                             new Industry() { IndustryId = 41, IndustryName = "Law Enforcement" },
+                                             new Industry() { IndustryId = 42, IndustryName = "Other" },
+                                             new Industry() { IndustryId = 43, IndustryName = "Public Works" },
+            };
+
+            Industry[] sector8Industries = { new Industry() { IndustryId = 44, IndustryName = "Electric Power Generation, Transmission and Distribution" },
+                                             new Industry() { IndustryId = 45, IndustryName = "Natural Gas" },
+                                             new Industry() { IndustryId = 46, IndustryName = "Other" },
+                                             new Industry() { IndustryId = 47, IndustryName = "Petroleum Refineries" },
+                                             new Industry() { IndustryId = 92, IndustryName = "Oil and Natural Gas" },
+            };
+
+            Industry[] sector9industries = { new Industry() { IndustryId = 48, IndustryName = "Other" },
+                                             new Industry() { IndustryId = 49, IndustryName = "US Banks" },
+                                             new Industry() { IndustryId = 50, IndustryName = "US Credit Unions" },
+                                             new Industry() { IndustryId = 93, IndustryName = "Consumer Services" },
+                                             new Industry() { IndustryId = 94, IndustryName = "Credit and Liquidity Products" },
+                                             new Industry() { IndustryId = 95, IndustryName = "Investment Products" },
+                                             new Industry() { IndustryId = 96, IndustryName = "Risk Transfer Products" },
+            };
+
+            Industry[] sector10Industries = { new Industry() { IndustryId = 51, IndustryName = "Beverage Manufacturing Plants" },
+                                              new Industry() { IndustryId = 52, IndustryName = "Food Manufacturing Plants" },
+                                              new Industry() { IndustryId = 53, IndustryName = "Food Services" },
+                                              new Industry() { IndustryId = 54, IndustryName = "Other" },
+                                              new Industry() { IndustryId = 97, IndustryName = "Supply" },
+                                              new Industry() { IndustryId = 98, IndustryName = "Processing, Packaging, and Production" },
+                                              new Industry() { IndustryId = 99, IndustryName = "Product Storage" },
+                                              new Industry() { IndustryId = 100, IndustryName = "Product Transportation" },
+                                              new Industry() { IndustryId = 101, IndustryName = "Product Distribution" },
+                                              new Industry() { IndustryId = 102, IndustryName = "Supporting Facilities" },
+            };
+
+
 
             // Format for sector industries data:
 
             // {sectorId, sectorName, [{industryId, IndustryName} ... ]}
 
-            List<BsonDocument> Sectors = new List<BsonDocument>
+            List<Sector> Sectors = new List<Sector>
             {
-                new Sector() { SectorId = "1", SectorName = "Chemical Sector (Not Oil and Gas)", Industries = new List<Industry>(sector1Industries) }.ToBsonDocument(),
-                new Sector() { SectorId = "2", SectorName = "Commercial Facilities Sector", Industries = new List<Industry>(sector2Industries) }.ToBsonDocument(),
-                new Sector() { SectorId = "3", SectorName = "Communications Sector", Industries = new List<Industry>(sector3Industries) }.ToBsonDocument()
+                new Sector() { SectorName = "Chemical Sector (Not Oil and Gas)", SectorId = "1", Industries = new List<Industry>(sector1Industries) },
+                new Sector() { SectorName = "Commercial Facilities Sector", SectorId = "2", Industries = new List<Industry>(sector2Industries) },
+                new Sector() { SectorName = "Communications Sector", SectorId = "3", Industries = new List<Industry>(sector3Industries) },
+                new Sector() { SectorName = "Critical Manufacturing Sector", SectorId = "4", Industries = new List<Industry>(sector4Industires) },
+                new Sector() { SectorName = "Dams Sector", SectorId = "5", Industries = new List<Industry>(sector5Industires) },
+                new Sector() { SectorName = "Defense Industrial Base Sector", SectorId = "6", Industries = new List<Industry>(sector6Industries) },
+                new Sector() { SectorName = "Emergency Services Sector", SectorId = "7", Industries = new List<Industry>(sector7Industries) },
+                new Sector() { SectorName = "Energy Sector", SectorId = "8", Industries = new List<Industry>(sector8Industries) },
             };
 
-            await collection.InsertManyAsync(Sectors);
+            collection.InsertMany(Sectors);
+           
         }
     }
     // Sectors
