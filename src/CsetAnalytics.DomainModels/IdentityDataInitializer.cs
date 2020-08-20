@@ -14,7 +14,6 @@ namespace CsetAnalytics.DomainModels
 
         public static async Task SeedCollections(IMongoDbSettings settings)
         {
-            Console.WriteLine(settings.ConnectionString);
             var client = new MongoClient(settings.ConnectionString);
             if (client != null)
             {

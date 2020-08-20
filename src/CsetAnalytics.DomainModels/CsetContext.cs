@@ -16,7 +16,6 @@ namespace CsetAnalytics.DomainModels
 
         public CsetContext(MongoDbSettings settings)
         {
-            Console.WriteLine(settings.ConnectionString);
             _settings = settings;
             _client = new MongoClient(_settings.ConnectionString);
             if (_client != null)
