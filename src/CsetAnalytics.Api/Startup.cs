@@ -24,6 +24,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using System.Net.Security;
 
 
 namespace CsetAnalytics.Api
@@ -42,12 +45,13 @@ namespace CsetAnalytics.Api
                 .AddJsonFile($"appsettings.{hostingEnvironment.EnvironmentName}.json", optional: true,
                     reloadOnChange: true)
                 .AddEnvironmentVariables();
+
             Configuration = configuration;
             this.HostingEnvironment = hostingEnvironment;
             _config = builder.Build();
         }
 
-        
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -63,7 +67,6 @@ namespace CsetAnalytics.Api
             services.AddSingleton(_config);
 
             services.AddAutoMapper(typeof(FactoryProfile));
-
 
             services.Configure<MongoDbSettings>(Configuration.GetSection(nameof(MongoDbSettings)));
             services.AddSingleton<MongoDbSettings>(sp => sp.GetRequiredService<IOptions<MongoDbSettings>>().Value);

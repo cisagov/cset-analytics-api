@@ -1,25 +1,24 @@
-version: '3'
+version: "3"
 services:
-    # The Postgres Database
-    cset-analytics-postgres:
-        container_name: cset-analytics-postgres
-        env_file: .env
-        image: postgres:latest
-        ports:
-        - "5432:5432"
-        volumes:
-            # relative mounts do not work with Windows
-            # Ownership issues with postgres service
-            - pgdata:/var/lib/postgresql/data
-    # The dotnet api
-    cset-analytics-api:
-        container_name: cset-analytics-api
-        build: .
-        depends_on:
-        - cset-analytics-postgres
-        env_file: .env
-        image: cset-analytics-api:1.0
-        ports:
-        - "44397:443"
+  # The Postgres Database
+  cset-analytics-mongo:
+    container_name: cset-analytics-mongo
+    env_file: .env
+    image: mongo:3.6
+    ports:
+      - "27017:27017"
+    volumes:
+      # relative mounts do not work with Windows
+      # Ownership issues with postgres service
+      - cset-analytics-mongo:/data/db
+  # The dotnet api
+  cset-analytics-api:
+    container_name: cset-analytics-api
+    build: .
+    env_file: .env
+    image: cset-analytics-api:1.0
+    ports:
+      - "8080:80"
+
 volumes:
-    pgdata:
+  cset-analytics-mongo:

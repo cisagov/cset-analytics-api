@@ -298,7 +298,7 @@ namespace CsetAnalytics.Business
         }
 
         /// <summary>
-        /// Save user password to user 
+        /// Save user password to user
         /// </summary>
         /// <param name="applicationUser"></param>
         /// <param name="changePassword"></param>
@@ -374,13 +374,13 @@ namespace CsetAnalytics.Business
             //using (var transaction = _context.Database.BeginTransaction())
             //{
             //    var history = _context.PasswordHistories.Where(x => x.AspNetUserId == user.Id);
-                
+
 
             //    foreach (var h in history)
             //    {
             //        _context.PasswordHistories.Remove(h);
             //    }
-                
+
             //    _context.SaveChanges();
 
             //    if (rolesForUser.Count() > 0)
