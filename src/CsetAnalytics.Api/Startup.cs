@@ -119,7 +119,7 @@ namespace CsetAnalytics.Api
 
             app.UseAuthentication();
             IMongoDbSettings dbSettings = settings;
-            DatabaseInitializer.SeedCollections(dbSettings).GetAwaiter();
+            DatabaseInitializer.SeedCollections(dbSettings);
 
             app.UseStaticFiles();
 

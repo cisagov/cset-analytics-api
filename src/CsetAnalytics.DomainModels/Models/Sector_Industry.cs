@@ -21,23 +21,22 @@ namespace CsetAnalytics.DomainModels.Models
 
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public int SectorId { get; set; }
+        public string Id { get; set; }
+        public string SectorId { get; set; }
 
         [Required]
         public string SectorName { get; set; }
 
+        public List<Industry> Industries { get; set; }
+
     }
 
-    public partial class Sector_Industry
+    public partial class Industry
     {
 
-        public Sector_Industry()
+        public Industry()
         {
         }
-
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public int SectorId { get; set; }
 
         public int IndustryId { get; set; }
 
