@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using AutoMapper;
 using CsetAnalytics.Business;
@@ -27,6 +28,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Net.Security;
+using Newtonsoft.Json;
 
 
 namespace CsetAnalytics.Api
@@ -55,6 +57,10 @@ namespace CsetAnalytics.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var Region = Configuration["AWSCognito:Region"];
+            var PoolId = Configuration["AWSCognito:PoolId"];
+            var AppClientId = Configuration["AWSCognito:AppClientId"];
+
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll",
@@ -63,6 +69,13 @@ namespace CsetAnalytics.Api
                         builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
                     });
             });
+            services.AddAuthentication("Bearer")
+                .AddJwtBearer(options =>
+                {
+                    options.Audience = $"{AppClientId}";
+                    options.Authority = $"https://cognito-idp.{Region}.amazonaws.com/{PoolId}";
+                });
+            
             services.AddControllers();
             services.AddSingleton(_config);
 
@@ -114,6 +127,7 @@ namespace CsetAnalytics.Api
 
             app.UseRouting();
             app.UseCors("AllowAll");
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
