@@ -53,8 +53,8 @@ locals {
   environment = {
     "DB_HOST" : module.documentdb.endpoint,
     "DB_PORT" : 27017,
-    "DB_PARAMS": "?authSource=admin&ssl=true&readpreference=primary&tlsInsecure=true",
-    "MONGO_TYPE": "DOCUMENTDB"
+    "DB_PARAMS" : "?authSource=admin&ssl=true&readpreference=primary&tlsInsecure=true",
+    "MONGO_TYPE" : "DOCUMENTDB"
   }
 
   secrets = {
@@ -87,7 +87,7 @@ module "api_fargate" {
   stage     = var.env
   name      = "api"
 
-  iam_server_cert_arn   = aws_iam_server_certificate._.arn
+  iam_server_cert_arn   = aws_acm_certificate.cert.arn
   container_port        = local.api_port
   container_definition  = module.api_container.json
   container_name        = "${var.app}-api"

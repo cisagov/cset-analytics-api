@@ -30,6 +30,47 @@ resource "aws_iam_server_certificate" "_" {
   private_key      = tls_private_key._.private_key_pem
 }
 
+# ===================================
+# Route 53
+# ===================================
+resource "aws_route53_record" "domain" {
+  zone_id = data.aws_route53_zone.zone.zone_id
+  name    = "${var.app}.${var.env}.${data.aws_route53_zone.zone.name}"
+  type    = "CNAME"
+  ttl     = "300"
+  records = [module.alb.alb_dns_name]
+}
+
+# ===========================
+# Certs
+# ===========================
+resource "aws_acm_certificate" "cert" {
+  domain_name       = aws_route53_record.domain.name
+  validation_method = "DNS"
+
+  tags = {
+    Environment = "dev"
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_route53_record" "validation" {
+  allow_overwrite = true
+  name            = aws_acm_certificate.cert.domain_validation_options[0].resource_record_name
+  records         = [aws_acm_certificate.cert.domain_validation_options[0].resource_record_value]
+  ttl             = 60
+  type            = aws_acm_certificate.cert.domain_validation_options[0].resource_record_type
+  zone_id         = data.aws_route53_zone.zone.zone_id
+}
+
+resource "aws_acm_certificate_validation" "validation" {
+  certificate_arn         = aws_acm_certificate.cert.arn
+  validation_record_fqdns = [aws_route53_record.validation.fqdn]
+}
+
 
 # ===================================
 # Load Balancer
