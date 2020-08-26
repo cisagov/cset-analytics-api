@@ -57,7 +57,7 @@ namespace CsetAnalytics.Api.Controllers
             }
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost]
         [Route("postAnalytics")]
         public async Task<IActionResult> PostAnalytics([FromBody]AnalyticsViewModel analytics){
