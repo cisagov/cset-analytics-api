@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Text;
 using AutoMapper;
 using CsetAnalytics.Business;
 using CsetAnalytics.Business.Analytics;
@@ -15,20 +11,13 @@ using CsetAnalytics.Interfaces.Analytics;
 using CsetAnalytics.Interfaces.Dashboard;
 using CsetAnalytics.Interfaces.Factories;
 using CsetAnalytics.ViewModels;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
-using System.Net.Security;
-using Newtonsoft.Json;
+using CsetAnalytics.Api.Middleware;
 
 
 namespace CsetAnalytics.Api
@@ -61,7 +50,6 @@ namespace CsetAnalytics.Api
             var PoolId = Configuration["AWSCognito:PoolId"];
             var AppClientId = Configuration["AWSCognito:AppClientId"];
 
-            services.AddCors();
             services.AddAuthentication("Bearer")
                 .AddJwtBearer(options =>
                 {
@@ -110,6 +98,8 @@ namespace CsetAnalytics.Api
                 await next();
             });
 
+            app.UseCorsMiddleware();
+
             app.UseAuthentication();
             IMongoDbSettings dbSettings = settings;
             DatabaseInitializer.SeedCollections(dbSettings);
@@ -119,9 +109,6 @@ namespace CsetAnalytics.Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
-            app.UseCors(
-                options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
-            );
             app.UseAuthentication();
             app.UseAuthorization();
 
