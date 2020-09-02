@@ -61,21 +61,14 @@ namespace CsetAnalytics.Api
             var PoolId = Configuration["AWSCognito:PoolId"];
             var AppClientId = Configuration["AWSCognito:AppClientId"];
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy("AllowAll",
-                    builder =>
-                    {
-                        builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
-                    });
-            });
+            services.AddCors();
             services.AddAuthentication("Bearer")
                 .AddJwtBearer(options =>
                 {
                     options.Audience = $"{AppClientId}";
                     options.Authority = $"https://cognito-idp.{Region}.amazonaws.com/{PoolId}";
                 });
-            
+
             services.AddControllers();
             services.AddSingleton(_config);
 
@@ -126,7 +119,9 @@ namespace CsetAnalytics.Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
-            app.UseCors("AllowAll");
+            app.UseCors(
+                options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
+            );
             app.UseAuthentication();
             app.UseAuthorization();
 
