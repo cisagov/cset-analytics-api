@@ -84,6 +84,19 @@ module "api_container" {
 # ===================================
 # Fargate Service
 # ===================================
+data "aws_iam_policy_document" "api" {
+  statement {
+    actions = [
+      "s3:*",
+      "cognito:*"
+    ]
+
+    resources = [
+      "*"
+    ]
+  }
+}
+
 module "api_fargate" {
   source    = "github.com/cisagov/fargate-service-tf-module"
   namespace = var.app
