@@ -54,7 +54,10 @@ locals {
     "DB_HOST" : module.documentdb.endpoint,
     "DB_PORT" : 27017,
     "DB_PARAMS" : "?authSource=admin&ssl=true&readpreference=primary&tlsInsecure=true",
-    "MONGO_TYPE" : "DOCUMENTDB"
+    "MONGO_TYPE" : "DOCUMENTDB",
+    "COGNITO_REGION": var.region,
+    "COGNITO_POOL_ID": aws_cognito_user_pool.pool.id,
+    "COGNITO_CLIENT_ID": aws_cognito_user_pool_client.client.id
   }
 
   secrets = {

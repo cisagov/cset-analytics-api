@@ -17,6 +17,11 @@ sed -i "s/__DB_PORT__/$DB_PORT/" appsettings.template.json
 repl=$(sed -e 's/[&\\/]/\\&/g; s/$/\\/' -e '$s/\\$//' <<<"$DB_PARAMS")
 sed -i "s/__DB_PARAMS__/$repl/" appsettings.template.json
 
+# Replace cognito params
+sed -i "s/__COGNITO_REGION__/$COGNITO_REGION/" appsettings.template.json
+sed -i "s/__COGNITO_POOL_ID__/$COGNITO_POOL_ID/" appsettings.template.json
+sed -i "s/__COGNITO_CLIENT_ID__/$COGNITO_CLIENT_ID/" appsettings.template.json
+
 cp appsettings.template.json appsettings.json
 
 dotnet CsetAnalytics.Api.dll
