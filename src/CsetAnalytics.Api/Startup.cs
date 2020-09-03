@@ -73,8 +73,7 @@ namespace CsetAnalytics.Api
                             .AllowAnyOrigin()
                             .SetIsOriginAllowedToAllowWildcardSubdomains()
                             .AllowAnyHeader()
-                            .AllowAnyMethod()
-                            .AllowCredentials();
+                            .AllowAnyMethod();
                     });
             });
 

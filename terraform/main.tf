@@ -46,81 +46,37 @@ module "documentdb" {
 # ===================================
 # Container Definition
 # ===================================
-locals {
-  api_port    = 80
-  api_lb_port = 8443
 
-  environment = {
-    "DB_HOST" : module.documentdb.endpoint,
-    "DB_PORT" : 27017,
-    "DB_PARAMS" : "?authSource=admin&ssl=true&readpreference=primary&tlsInsecure=true",
-    "MONGO_TYPE" : "DOCUMENTDB",
-    "COGNITO_REGION": var.region,
-    "COGNITO_POOL_ID": aws_cognito_user_pool.pool.id,
-    "COGNITO_CLIENT_ID": aws_cognito_user_pool_client.client.id,
-    "CORS_CSET_ORIGINS": "https://${aws_route53_record.domain.name},https://${module.alb.alb_dns_name},https://*.${var.route53_zone_name}"
-  }
 
-  secrets = {
-    "DB_PW" : aws_ssm_parameter.docdb_password.arn,
-    "DB_USER" : aws_ssm_parameter.docdb_username.arn,
-  }
-}
 
-module "api_container" {
-  source    = "github.com/cisagov/fargate-container-def-tf-module"
-  namespace = var.app
-  stage     = var.env
-  name      = "api"
+# # ===================================
+# # Fargate Service
+# # ===================================
 
-  container_name  = "${var.app}-api"
-  container_image = "${var.image_repo}:${var.image_tag}"
-  container_port  = local.api_port
-  region          = var.region
-  log_retention   = 7
-  environment     = local.environment
-  secrets         = local.secrets
-}
 
-# ===================================
-# Fargate Service
-# ===================================
-data "aws_iam_policy_document" "api" {
-  statement {
-    actions = [
-      "s3:*",
-      "cognito:*"
-    ]
+# module "api_fargate" {
+#   source    = "github.com/cisagov/fargate-service-tf-module"
+#   namespace = var.app
+#   stage     = var.env
+#   name      = "api"
 
-    resources = [
-      "*"
-    ]
-  }
-}
-
-module "api_fargate" {
-  source    = "github.com/cisagov/fargate-service-tf-module"
-  namespace = var.app
-  stage     = var.env
-  name      = "api"
-
-  https_cert_arn        = aws_acm_certificate.cert.arn
-  container_port        = local.api_port
-  container_definition  = module.api_container.json
-  container_name        = "${var.app}-api"
-  cpu                   = 2048
-  memory                = 4096
-  vpc_id                = var.vpc_id
-  health_check_interval = 60
-  health_check_path     = "/api/ping/GetPing"
-  health_check_codes    = "200"
-  iam_policy_document   = data.aws_iam_policy_document.api.json
-  load_balancer_arn     = module.alb.alb_arn
-  load_balancer_port    = local.api_lb_port
-  desired_count         = 1
-  subnet_ids            = var.private_subnet_ids
-  security_group_ids    = [aws_security_group.api.id]
-}
+#   https_cert_arn        = aws_acm_certificate.cert.arn
+#   container_port        = local.api_port
+#   container_definition  = module.api_container.json
+#   container_name        = "${var.app}-api"
+#   cpu                   = 2048
+#   memory                = 4096
+#   vpc_id                = var.vpc_id
+#   health_check_interval = 60
+#   health_check_path     = "/api/ping/GetPing"
+#   health_check_codes    = "200"
+#   iam_policy_document   = data.aws_iam_policy_document.api.json
+#   load_balancer_arn     = module.alb.alb_arn
+#   load_balancer_port    = local.api_lb_port
+#   desired_count         = 1
+#   subnet_ids            = var.private_subnet_ids
+#   security_group_ids    = [aws_security_group.api.id]
+# }
 
 # ===================================
 # Security Groups
