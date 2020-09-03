@@ -69,7 +69,8 @@ namespace CsetAnalytics.Api
                 options.AddDefaultPolicy(
                     builder =>
                     {
-                        builder.WithOrigins(origins)
+                        builder//.WithOrigins(origins)
+                            .AllowAnyOrigin()
                             .SetIsOriginAllowedToAllowWildcardSubdomains()
                             .AllowAnyHeader()
                             .AllowAnyMethod()
