@@ -9,7 +9,6 @@ using CsetAnalytics.ViewModels;
 using CsetAnalytics.Interfaces.Analytics;
 using CsetAnalytics.Interfaces.Factories;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 
 namespace CsetAnalytics.Api.Controllers
@@ -34,7 +33,6 @@ namespace CsetAnalytics.Api.Controllers
         //[Authorize]
         [HttpPost]
         [Route("postAnalyticsAnonymously")]
-        [EnableCors]
         public async Task<IActionResult> PostAnalyticsAnonymously([FromBody] AnalyticsViewModel analytics)
         {
             try
@@ -61,7 +59,6 @@ namespace CsetAnalytics.Api.Controllers
         [Authorize]
         [HttpPost]
         [Route("postAnalytics")]
-        [EnableCors]
         public async Task<IActionResult> PostAnalytics([FromBody] AnalyticsViewModel analytics)
         {
             try

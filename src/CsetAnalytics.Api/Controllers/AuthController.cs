@@ -7,7 +7,8 @@ using Amazon.Auth.AccessControlPolicy.ActionIdentifiers;
 using Amazon.CognitoIdentityProvider;
 using Amazon.CognitoIdentityProvider.Model;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Cors;
+using CsetAnalytics.DomainModels.Models;
+using Microsoft.Extensions.Options;
 
 namespace CsetAnalytics.Api.Controllers
 {
@@ -15,8 +16,12 @@ namespace CsetAnalytics.Api.Controllers
     [ApiController]
     public class AuthController : Controller
     {
-        private string _clientId = "5vb86p6m4g7ivavbftgfbsdsfp";
-        private readonly RegionEndpoint _region = RegionEndpoint.USEast1;
+        private readonly IOptions<CognitoSettings> cognitoSettings;
+
+        public AuthController(IOptions<CognitoSettings> cognitoSettings)
+        {
+            this.cognitoSettings = cognitoSettings;
+        }
 
         public class User
         {
@@ -27,14 +32,14 @@ namespace CsetAnalytics.Api.Controllers
 
         [HttpPost]
         [Route("register")]
-        [EnableCors]
         public async Task<ActionResult<string>> Register(User user)
         {
-            var cognito = new AmazonCognitoIdentityProviderClient(_region);
+            RegionEndpoint region = RegionEndpoint.GetBySystemName(this.cognitoSettings.Value.Region);
+            var cognito = new AmazonCognitoIdentityProviderClient(region);
 
             var request = new SignUpRequest
             {
-                ClientId = _clientId,
+                ClientId = this.cognitoSettings.Value.AppClientId,
                 Password = user.Password,
                 Username = user.Username
             };
@@ -53,15 +58,15 @@ namespace CsetAnalytics.Api.Controllers
 
         [HttpPost]
         [Route("signin")]
-        [EnableCors]
         public async Task<ActionResult<string>> SignIn(User user)
         {
-            var cognito = new AmazonCognitoIdentityProviderClient(_region);
+            RegionEndpoint region = RegionEndpoint.GetBySystemName(this.cognitoSettings.Value.Region);
+            var cognito = new AmazonCognitoIdentityProviderClient(region);
 
             var request = new AdminInitiateAuthRequest
             {
-                UserPoolId = "us-east-1_u5WdTzuFy",
-                ClientId = _clientId,
+                UserPoolId = this.cognitoSettings.Value.PoolId,
+                ClientId = this.cognitoSettings.Value.AppClientId,
                 AuthFlow = AuthFlowType.ADMIN_NO_SRP_AUTH
             };
 
