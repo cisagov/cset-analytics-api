@@ -18,7 +18,6 @@ namespace CsetAnalytics.Api.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    [EnableCors("CorsApi")]
     public class DashboardController : ControllerBase
     {
 
@@ -34,7 +33,6 @@ namespace CsetAnalytics.Api.Controllers
             this._dashboardBusiness = dashboardBusiness;
         }
 
-        [EnableCors("AllowAll")]
         [Authorize]
         [HttpGet]
         [Route("GetDashboardChart")]
@@ -54,7 +52,6 @@ namespace CsetAnalytics.Api.Controllers
             }
         }
 
-        [EnableCors("AllowAll")]
         [Authorize]
         [HttpGet]
         [Route("GetAssessmentList")]

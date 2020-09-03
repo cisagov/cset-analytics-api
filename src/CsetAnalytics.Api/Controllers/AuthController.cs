@@ -13,7 +13,6 @@ namespace CsetAnalytics.Api.Controllers
 {
     [Route("api/auth")]
     [ApiController]
-    [EnableCors("CorsApi")]
     public class AuthController : Controller
     {
         private string _clientId = "5vb86p6m4g7ivavbftgfbsdsfp";

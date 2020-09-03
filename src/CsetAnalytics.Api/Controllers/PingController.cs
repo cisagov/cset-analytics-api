@@ -5,7 +5,6 @@ namespace CsetAnalytics.Api.Controllers
 {
     [ApiController]
     [Route("api/ping")]
-    [EnableCors("CorsApi")]
     public class PingController : Controller
     {
         [Route("GetPing")]

@@ -16,7 +16,6 @@ namespace CsetAnalytics.Api.Controllers
 {
     [Route("api/Analytics")]
     [ApiController]
-    [EnableCors("CorsApi")]
     public class AnalyticsController : ControllerBase
     {
         private readonly IBaseFactory<AnalyticQuestionViewModel, AnalyticQuestionAnswer> _questionViewModelFactory;

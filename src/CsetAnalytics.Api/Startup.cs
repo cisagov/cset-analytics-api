@@ -65,14 +65,17 @@ namespace CsetAnalytics.Api
             var origins = Environment.GetEnvironmentVariable("CORS_CSET_ORIGINS").Split(",");
 
             services.AddCors(options =>
-                {
-                    options.AddPolicy("CorsApi",
-                        builder => builder
-                            .WithOrigins(origins)
-                            .AllowAnyMethod()
+            {
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder.WithOrigins(origins)
+                            .SetIsOriginAllowedToAllowWildcardSubdomains()
                             .AllowAnyHeader()
-                            .AllowCredentials());
-                });
+                            .AllowAnyMethod()
+                            .AllowCredentials();
+                    });
+            });
 
             services.AddControllers();
             services.AddSingleton(_config);
@@ -114,12 +117,13 @@ namespace CsetAnalytics.Api
             });
 
             app.UseHttpsRedirection();
-            app.UseRouting();
-            app.UseCors("CorsApi");
-            app.UseAuthentication();
-            app.UseAuthorization();
-
             app.UseStaticFiles();
+            app.UseRouting();
+
+            app.UseCors();
+
+            app.UseAuthorization();
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {

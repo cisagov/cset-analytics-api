@@ -14,7 +14,6 @@ namespace CsetAnalytics.Api.Controllers
 {
     [Route("api/Login")]
     [ApiController]
-    [EnableCors("CorsApi")]
     public class LoginController : ControllerBase
     {
         private readonly IConfiguration config;
