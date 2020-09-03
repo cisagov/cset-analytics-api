@@ -57,26 +57,6 @@ namespace CsetAnalytics.Api
                     options.Authority = $"https://cognito-idp.{Region}.amazonaws.com/{PoolId}";
                 });
 
-            string corsValue = Environment.GetEnvironmentVariable("CORS_CSET_ORIGINS");
-            if (corsValue == null)
-            {
-                Environment.SetEnvironmentVariable("CORS_CSET_ORIGINS", "localhost:4200");
-            }
-            var origins = Environment.GetEnvironmentVariable("CORS_CSET_ORIGINS").Split(",");
-
-            services.AddCors(options =>
-            {
-                options.AddDefaultPolicy(
-                    builder =>
-                    {
-                        builder//.WithOrigins(origins)
-                            .AllowAnyOrigin()
-                            .SetIsOriginAllowedToAllowWildcardSubdomains()
-                            .AllowAnyHeader()
-                            .AllowAnyMethod();
-                    });
-            });
-
             services.AddControllers();
             services.AddSingleton(_config);
 
@@ -84,6 +64,9 @@ namespace CsetAnalytics.Api
 
             services.Configure<MongoDbSettings>(Configuration.GetSection(nameof(MongoDbSettings)));
             services.AddSingleton<MongoDbSettings>(sp => sp.GetRequiredService<IOptions<MongoDbSettings>>().Value);
+
+            services.Configure<CognitoSettings>(Configuration.GetSection("AWSCognito"));
+            services.AddSingleton<CognitoSettings>(sp => sp.GetRequiredService<IOptions<CognitoSettings>>().Value);
 
             //Business
             services.AddTransient<IUserBusiness, UsersBusiness>();
@@ -119,8 +102,6 @@ namespace CsetAnalytics.Api
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
-
-            app.UseCors();
 
             app.UseAuthorization();
             app.UseAuthentication();
