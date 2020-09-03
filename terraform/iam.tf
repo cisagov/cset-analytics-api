@@ -68,7 +68,10 @@ data "aws_iam_policy_document" "api" {
   statement {
     actions = [
       "s3:*",
-      "cognito:*"
+      "cognito:*",
+      "cognito-identity:*",
+      "cognito-idp:*",
+      "cognito-sync:*"
     ]
 
     resources = [
