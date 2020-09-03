@@ -9,6 +9,7 @@ namespace CsetAnalytics.Api.Controllers
     {
         [Route("GetPing")]
         [HttpGet]
+        [EnableCors]
         public IActionResult GetPing()
         {
             return Ok();

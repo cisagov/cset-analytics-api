@@ -36,6 +36,7 @@ namespace CsetAnalytics.Api.Controllers
         [Authorize]
         [HttpGet]
         [Route("GetDashboardChart")]
+        [EnableCors]
         public async Task<IActionResult> GetDashBoardChart(string assessment_id)
         {
             try
@@ -55,6 +56,7 @@ namespace CsetAnalytics.Api.Controllers
         [Authorize]
         [HttpGet]
         [Route("GetAssessmentList")]
+        [EnableCors]
         public async Task<IActionResult> GetAssessmentList()
         {
             try

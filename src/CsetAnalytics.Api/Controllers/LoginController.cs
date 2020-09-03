@@ -14,6 +14,7 @@ namespace CsetAnalytics.Api.Controllers
 {
     [Route("api/Login")]
     [ApiController]
+    [EnableCors]
     public class LoginController : ControllerBase
     {
         private readonly IConfiguration config;
@@ -34,6 +35,7 @@ namespace CsetAnalytics.Api.Controllers
         /// // GET: api/login/authenticate
         [Route("authenticate")]
         [HttpPost]
+        [EnableCors]
         public async Task<IActionResult> Authenticate([FromBody] CredentialModel model)
         {
 
@@ -129,6 +131,7 @@ namespace CsetAnalytics.Api.Controllers
         [Authorize]
         [Route("changePassword")]
         [HttpPost]
+        [EnableCors]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordModel model)
         {
             try
@@ -188,6 +191,7 @@ namespace CsetAnalytics.Api.Controllers
         //UserLogout
         [Route("logUserLogout")]
         [HttpGet]
+        [EnableCors]
         public ActionResult<bool> LogUserLogout()
         {
             try

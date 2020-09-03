@@ -27,6 +27,7 @@ namespace CsetAnalytics.Api.Controllers
 
         [HttpPost]
         [Route("register")]
+        [EnableCors]
         public async Task<ActionResult<string>> Register(User user)
         {
             var cognito = new AmazonCognitoIdentityProviderClient(_region);
@@ -52,6 +53,7 @@ namespace CsetAnalytics.Api.Controllers
 
         [HttpPost]
         [Route("signin")]
+        [EnableCors]
         public async Task<ActionResult<string>> SignIn(User user)
         {
             var cognito = new AmazonCognitoIdentityProviderClient(_region);
