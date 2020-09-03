@@ -18,6 +18,7 @@ namespace CsetAnalytics.Api.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("CorsApi")]
     public class DashboardController : ControllerBase
     {
 
@@ -43,7 +44,7 @@ namespace CsetAnalytics.Api.Controllers
             {
                 //string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-                List<Series> dashboardChartData  = await _dashboardBusiness.GetAverages(assessment_id);
+                List<Series> dashboardChartData = await _dashboardBusiness.GetAverages(assessment_id);
 
                 return Ok(dashboardChartData);
             }

@@ -1,27 +1,20 @@
 ﻿using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.IO;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using CsetAnalytics.DomainModels;
-using CsetAnalytics.DomainModels.Models;
 using CsetAnalytics.Interfaces;
 using CsetAnalytics.ViewModels.Login;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 
 namespace CsetAnalytics.Api.Controllers
 {
-    [EnableCors("AllowAll")]
     [Route("api/Login")]
     [ApiController]
+    [EnableCors("CorsApi")]
     public class LoginController : ControllerBase
     {
         private readonly IConfiguration config;

@@ -7,11 +7,13 @@ using Amazon.Auth.AccessControlPolicy.ActionIdentifiers;
 using Amazon.CognitoIdentityProvider;
 using Amazon.CognitoIdentityProvider.Model;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Cors;
 
 namespace CsetAnalytics.Api.Controllers
 {
     [Route("api/auth")]
     [ApiController]
+    [EnableCors("CorsApi")]
     public class AuthController : Controller
     {
         private string _clientId = "5vb86p6m4g7ivavbftgfbsdsfp";
@@ -43,7 +45,7 @@ namespace CsetAnalytics.Api.Controllers
                 Value = user.Email
             };
             request.UserAttributes.Add(emailAttribute);
-            
+
             var response = await cognito.SignUpAsync(request);
 
             return Ok();
@@ -69,8 +71,8 @@ namespace CsetAnalytics.Api.Controllers
             var expireDate = DateTime.Now.AddSeconds(response.AuthenticationResult.ExpiresIn);
             return Ok(new
             {
-                id_token = response.AuthenticationResult.IdToken, 
-                expires_at = expireDate, 
+                id_token = response.AuthenticationResult.IdToken,
+                expires_at = expireDate,
                 username = user.Username
             });
         }

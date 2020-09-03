@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Cors;
 
 namespace CsetAnalytics.Api.Controllers
 {
     [ApiController]
     [Route("api/ping")]
+    [EnableCors("CorsApi")]
     public class PingController : Controller
     {
         [Route("GetPing")]

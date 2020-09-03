@@ -16,6 +16,7 @@ namespace CsetAnalytics.Api.Controllers
 {
     [Route("api/Analytics")]
     [ApiController]
+    [EnableCors("CorsApi")]
     public class AnalyticsController : ControllerBase
     {
         private readonly IBaseFactory<AnalyticQuestionViewModel, AnalyticQuestionAnswer> _questionViewModelFactory;
@@ -34,7 +35,7 @@ namespace CsetAnalytics.Api.Controllers
         //[Authorize]
         [HttpPost]
         [Route("postAnalyticsAnonymously")]
-        public async Task<IActionResult> PostAnalyticsAnonymously([FromBody]AnalyticsViewModel analytics)
+        public async Task<IActionResult> PostAnalyticsAnonymously([FromBody] AnalyticsViewModel analytics)
         {
             try
             {
@@ -60,7 +61,8 @@ namespace CsetAnalytics.Api.Controllers
         [Authorize]
         [HttpPost]
         [Route("postAnalytics")]
-        public async Task<IActionResult> PostAnalytics([FromBody]AnalyticsViewModel analytics){
+        public async Task<IActionResult> PostAnalytics([FromBody] AnalyticsViewModel analytics)
+        {
             try
             {
                 //string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -80,7 +82,7 @@ namespace CsetAnalytics.Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = $"Analytics information was not saved"});
+                return BadRequest(new { message = $"Analytics information was not saved" });
             }
         }
     }
