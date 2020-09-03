@@ -17,7 +17,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using CsetAnalytics.Api.Middleware;
+using System;
 
 
 namespace CsetAnalytics.Api
@@ -57,6 +57,23 @@ namespace CsetAnalytics.Api
                     options.Authority = $"https://cognito-idp.{Region}.amazonaws.com/{PoolId}";
                 });
 
+            string corsValue = Environment.GetEnvironmentVariable("CORS_CSET_ORIGINS");
+            if (corsValue == null)
+            {
+                Environment.SetEnvironmentVariable("CORS_CSET_ORIGINS", "localhost:4200");
+            }
+            var origins = Environment.GetEnvironmentVariable("CORS_CSET_ORIGINS").Split(",");
+
+            services.AddCors(options =>
+                {
+                    options.AddPolicy("CorsApi",
+                        builder => builder
+                            .WithOrigins(origins)
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()
+                            .AllowCredentials());
+                });
+
             services.AddControllers();
             services.AddSingleton(_config);
 
@@ -74,8 +91,6 @@ namespace CsetAnalytics.Api
             services.AddTransient<IBaseFactory<AnalyticQuestionViewModel, AnalyticQuestionAnswer>, AnalyticQuestionModelFactory>();
             services.AddTransient<IBaseFactory<AnalyticQuestionAnswer, AnalyticQuestionViewModel>, AnalyticQuestionViewModelFactory>();
             services.AddTransient<IBaseFactory<AnalyticAssessmentViewModel, Assessment>, AnalyticAssessmentFactory>();
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -98,24 +113,21 @@ namespace CsetAnalytics.Api
                 await next();
             });
 
-            app.UseCorsMiddleware();
-
-            app.UseAuthentication();
-            IMongoDbSettings dbSettings = settings;
-            DatabaseInitializer.SeedCollections(dbSettings);
-
-            app.UseStaticFiles();
-
             app.UseHttpsRedirection();
-
             app.UseRouting();
+            app.UseCors("CorsApi");
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseStaticFiles();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
+            IMongoDbSettings dbSettings = settings;
+            DatabaseInitializer.SeedCollections(dbSettings);
         }
     }
 }
