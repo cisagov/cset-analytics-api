@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Amazon.CognitoIdentityProvider;
 using CsetAnalytics.DomainModels.Models;
 using Microsoft.AspNetCore.Mvc;
 using CsetAnalytics.ViewModels;
@@ -42,8 +44,8 @@ namespace CsetAnalytics.Api.Controllers
                 assessment = await _analyticsBusiness.SaveAssessment(assessment);
 
                 List<AnalyticQuestionAnswer> questions = (_questionViewModelFactory.Create(analytics.QuestionAnswers.AsQueryable())).ToList();
-                questions.ForEach(x => x.Assessment_Id = assessment.Assessment_Id);
-                questions.Where(x => x.Answer_Text == null).ToList().ForEach(x => x.Answer_Text = "U");
+                questions.ForEach(x => x.AssessmentId = assessment.Assessment_Id);
+                questions.Where(x => x.AnswerText == null).ToList().ForEach(x => x.AnswerText = "U");
 
 
 
@@ -63,19 +65,19 @@ namespace CsetAnalytics.Api.Controllers
         {
             try
             {
-                //string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                //AnalyticDemographic demographic = _demographicViewModelFactory.Create(analytics.Demographics);
+                //string userId = this.User.FindFirstValue(ClaimTypes.Name);
+                var identity = (ClaimsIdentity) this.User.Identity;
+                var claims = identity.Claims.ToList();
+                var username = claims.FirstOrDefault(x => x.Type == "cognito:username")?.Value;
+                Assessment assessment = _assessmentViewModelFactory.Create(analytics.Assessment);
+                assessment.AssessmentCreatorId = username;
+                assessment = await _analyticsBusiness.SaveAssessment(assessment);
 
-                //AnalyticDemographic rDemographic = await _analyticsBusiness.SaveAnalyticDemographic(demographic);
-                //Assessment assessment = _assessmentViewModelFactory.Create(analytics.Assessment);
-                ////assessment.AnalyticDemographicId = rDemographic.AnalyticDemographicId;
-                //assessment.AssessmentCreatorId = userId;
-                //assessment = await _analyticsBusiness.SaveAssessment(assessment);
+                List<AnalyticQuestionAnswer> questions = (_questionViewModelFactory.Create(analytics.QuestionAnswers.AsQueryable())).ToList();
+                questions.ForEach(x => x.AssessmentId = assessment.Assessment_Id);
+                questions.Where(x => x.AnswerText == null).ToList().ForEach(x => x.AnswerText = "U");
 
-                //List<AnalyticQuestionAnswer> questions = (_questionViewModelFactory.Create(analytics.QuestionAnswers.AsQueryable())).ToList();
-                //questions.ForEach(x => x.Assessment_Id = assessment.Assessment_Id);
-                //questions.ForEach(x => x.Answer_Text = string.IsNullOrEmpty(x.Answer_Text) ? "U" : x.Answer_Text);
-                //await _analyticsBusiness.SaveAnalyticQuestions(questions);
+                await _analyticsBusiness.SaveAnalyticQuestions(questions);
                 return Ok(new { message = "Analytics data saved" });
             }
             catch (Exception ex)

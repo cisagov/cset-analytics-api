@@ -18,7 +18,7 @@ namespace CsetAnalytics.Factories
         {
             CreateMap<AnalyticQuestionAnswer, AnalyticQuestionViewModel>();
             CreateMap<AnalyticQuestionViewModel, AnalyticQuestionAnswer>()
-                .ForMember(dest => dest.Question_Or_Requirement_Id,
+                .ForMember(dest => dest.QuestionId,
                     opt=>opt.MapFrom(
                         src => src.QuestionId));
             CreateMap<AnalyticAssessmentViewModel, Assessment>();

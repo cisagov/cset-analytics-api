@@ -18,24 +18,29 @@ namespace CsetAnalytics.DomainModels.Models
         public string AnalyticQuestionId { get; set; }
 
         [Required]
-        public string Assessment_Id { get; set; }
+        public string AssessmentId { get; set; }
 
-        public int Question_Or_Requirement_Id { get; set; }
+        public int QuestionId { get; set; }
 
         [Required]
-        public string Answer_Text { get; set; }
+        public string AnswerText { get; set; }
 
         [Required]
         public string QuestionText { get; set; }
 
-        public Guid? Component_Guid { get; set; }
+        public Guid? ComponentGuid { get; set; }
 
-        public string Custom_Question_Guid { get; set; }
+        public string CustomQuestionGuid { get; set; }
 
-        public bool Is_Requirement { get; set; }
+        public bool IsRequirement { get; set; }
 
-        public bool Is_Component { get; set; }
+        public bool IsComponent { get; set; }
 
         public bool Is_Framework { get; set; }
+        public int CategoryId { get; set; }
+        public string CategoryText { get; set; }
+        public int SubCategoryId { get; set; }
+        public string SubCategoryText { get; set; }
+        public string SetName { get; set; }
     }
 }

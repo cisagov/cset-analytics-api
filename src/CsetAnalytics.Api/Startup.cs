@@ -49,7 +49,14 @@ namespace CsetAnalytics.Api
             var Region = Configuration["AWSCognito:Region"];
             var PoolId = Configuration["AWSCognito:PoolId"];
             var AppClientId = Configuration["AWSCognito:AppClientId"];
-
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                    });
+            });
             services.AddAuthentication("Bearer")
                 .AddJwtBearer(options =>
                 {
@@ -102,9 +109,10 @@ namespace CsetAnalytics.Api
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
-
-            app.UseAuthorization();
+            app.UseCors("AllowAll");
             app.UseAuthentication();
+            app.UseAuthorization();
+           
 
             app.UseEndpoints(endpoints =>
             {

@@ -32,21 +32,21 @@ namespace CsetAnalytics.Business.Dashboard
                 where a.SectorId == sector_id
                 select a).ToList();
             var query = (from a in assessments.AsQueryable()
-                join q in _context.Questions.AsQueryable() on a.Assessment_Id equals q.Assessment_Id
+                join q in _context.Questions.AsQueryable() on a.Assessment_Id equals q.AssessmentId
                 //where a.SectorId == sector_id
                 select q).ToList();
 
             var tempQuery = (from q in query.AsQueryable()
-                group new {q.Assessment_Id, q.Answer_Text} by new
+                group new {q.AssessmentId, q.AnswerText} by new
                 {
-                    q.Assessment_Id,
-                    q.Answer_Text
+                    q.AssessmentId,
+                    q.AnswerText
                 }
                 into g
                 select new
                 {
-                    g.Key.Assessment_Id,
-                    g.Key.Answer_Text,
+                    g.Key.AssessmentId,
+                    g.Key.AnswerText,
                     Count = g.Count()
                 }).ToList();
 
@@ -60,10 +60,10 @@ namespace CsetAnalytics.Business.Dashboard
             {
 
                 QuickSum quickSum;
-                if (sums.TryGetValue(a.Assessment_Id, out quickSum))
+                if (sums.TryGetValue(a.AssessmentId, out quickSum))
                 {
                     quickSum.TotalCount += a.Count;
-                    if (a.Answer_Text == "Y" || a.Answer_Text == "A")
+                    if (a.AnswerText == "Y" || a.AnswerText == "A")
                     {
                         quickSum.YesAltCount += a.Count;
                     }
@@ -71,11 +71,11 @@ namespace CsetAnalytics.Business.Dashboard
                 else
                 {
                     int yaltCount = 0;
-                    if (a.Answer_Text == "Y" || a.Answer_Text == "A")
+                    if (a.AnswerText == "Y" || a.AnswerText == "A")
                     {
                         yaltCount = a.Count;
                     }
-                    sums.Add(a.Assessment_Id, new QuickSum() { assesment_id = a.Assessment_Id, TotalCount = a.Count, YesAltCount = yaltCount });
+                    sums.Add(a.AssessmentId, new QuickSum() { assesment_id = a.AssessmentId, TotalCount = a.Count, YesAltCount = yaltCount });
 
                 }
             }
@@ -97,19 +97,19 @@ namespace CsetAnalytics.Business.Dashboard
                 where a.IndustryId == industry_id && a.SectorId == sector_id
                          select a).ToList();
             var questions = (from a in assessment.AsQueryable()
-                join q in _context.Questions.AsQueryable() on a.Assessment_Id equals q.Assessment_Id
+                join q in _context.Questions.AsQueryable() on a.Assessment_Id equals q.AssessmentId
                 select q);
             var query = (from q in questions.AsQueryable()
-            group new { q.Assessment_Id, q.Answer_Text } by new
+            group new { q.AssessmentId, q.AnswerText } by new
                 {
-                    q.Assessment_Id,
-                    q.Answer_Text
+                    q.AssessmentId,
+                    q.AnswerText
                 }
                 into g
                 select new
                 {
-                    g.Key.Assessment_Id,
-                    g.Key.Answer_Text,
+                    g.Key.AssessmentId,
+                    g.Key.AnswerText,
                     Count = g.Count()
                 }).ToList();
 
@@ -122,10 +122,10 @@ namespace CsetAnalytics.Business.Dashboard
             foreach (var a in query.ToList())
             {
                 QuickSum quickSum;
-                if (sums.TryGetValue(a.Assessment_Id, out quickSum))
+                if (sums.TryGetValue(a.AssessmentId, out quickSum))
                 {
                     quickSum.TotalCount += a.Count;
-                    if (a.Answer_Text == "Y" || a.Answer_Text == "A")
+                    if (a.AnswerText == "Y" || a.AnswerText == "A")
                     {
                         quickSum.YesAltCount += a.Count;
                     }
@@ -133,11 +133,11 @@ namespace CsetAnalytics.Business.Dashboard
                 else
                 {
                     int yaltCount = 0;
-                    if (a.Answer_Text == "Y" || a.Answer_Text == "A")
+                    if (a.AnswerText == "Y" || a.AnswerText == "A")
                     {
                         yaltCount = a.Count;
                     }
-                    sums.Add(a.Assessment_Id, new QuickSum() { assesment_id = a.Assessment_Id, TotalCount = a.Count, YesAltCount = yaltCount });
+                    sums.Add(a.AssessmentId, new QuickSum() { assesment_id = a.AssessmentId, TotalCount = a.Count, YesAltCount = yaltCount });
 
                 }
             }
@@ -160,19 +160,19 @@ namespace CsetAnalytics.Business.Dashboard
                 where a.Assessment_Id == myAssessment_Id
                 select a).ToList();
             var questions = (from a in assessments.AsQueryable()
-                join q in _context.Questions.AsQueryable() on a.Assessment_Id equals q.Assessment_Id
+                join q in _context.Questions.AsQueryable() on a.Assessment_Id equals q.AssessmentId
                 select q).ToList();
             var query = (from q in questions.AsQueryable()
-                group new { q.Assessment_Id, q.Answer_Text } by new
+                group new { q.AssessmentId, q.AnswerText } by new
                 {
-                    q.Assessment_Id,
-                    q.Answer_Text
+                    q.AssessmentId,
+                    q.AnswerText
                 }
                 into g
                 select new
                 {
-                    g.Key.Assessment_Id,
-                    g.Key.Answer_Text,
+                    g.Key.AssessmentId,
+                    g.Key.AnswerText,
                     Count = g.Count()
                 }).ToList();
 
@@ -185,10 +185,10 @@ namespace CsetAnalytics.Business.Dashboard
             foreach (var a in query.ToList())
             {
                 QuickSum quickSum;
-                if (sums.TryGetValue(a.Assessment_Id, out quickSum))
+                if (sums.TryGetValue(a.AssessmentId, out quickSum))
                 {
                     quickSum.TotalCount += a.Count;
-                    if (a.Answer_Text == "Y" || a.Answer_Text == "A")
+                    if (a.AnswerText == "Y" || a.AnswerText == "A")
                     {
                         quickSum.YesAltCount += a.Count;
                     }
@@ -196,11 +196,11 @@ namespace CsetAnalytics.Business.Dashboard
                 else
                 {
                     int yaltCount = 0;
-                    if (a.Answer_Text == "Y" || a.Answer_Text == "A")
+                    if (a.AnswerText == "Y" || a.AnswerText == "A")
                     {
                         yaltCount = a.Count;
                     }
-                    sums.Add(a.Assessment_Id, new QuickSum() { assesment_id = a.Assessment_Id, TotalCount = a.Count, YesAltCount = yaltCount });
+                    sums.Add(a.AssessmentId, new QuickSum() { assesment_id = a.AssessmentId, TotalCount = a.Count, YesAltCount = yaltCount });
 
                 }
             }

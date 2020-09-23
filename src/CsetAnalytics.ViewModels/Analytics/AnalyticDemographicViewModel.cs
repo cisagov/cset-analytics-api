@@ -13,5 +13,6 @@ namespace CsetAnalytics.ViewModels
         public int SectorId { get; set; }
         public string Size { get; set; }
         public string AssetValue { get; set; }
+        public string Alias { get; set; }
     }
 }
