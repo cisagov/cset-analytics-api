@@ -12,6 +12,7 @@ using CsetAnalytics.Interfaces.Analytics;
 using CsetAnalytics.Interfaces.Factories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CsetAnalytics.Api.Controllers
 {
@@ -69,15 +70,25 @@ namespace CsetAnalytics.Api.Controllers
                 var identity = (ClaimsIdentity) this.User.Identity;
                 var claims = identity.Claims.ToList();
                 var username = claims.FirstOrDefault(x => x.Type == "cognito:username")?.Value;
-                Assessment assessment = _assessmentViewModelFactory.Create(analytics.Assessment);
-                assessment.AssessmentCreatorId = username;
-                assessment = await _analyticsBusiness.SaveAssessment(assessment);
+                var groupQuestions = from q in analytics.QuestionAnswers
+                    group q by q.SetName
+                    into qGroup
+                    select qGroup;
 
-                List<AnalyticQuestionAnswer> questions = (_questionViewModelFactory.Create(analytics.QuestionAnswers.AsQueryable())).ToList();
-                questions.ForEach(x => x.AssessmentId = assessment.Assessment_Id);
-                questions.Where(x => x.AnswerText == null).ToList().ForEach(x => x.AnswerText = "U");
+                foreach (var q in groupQuestions)
+                {
+                    Assessment assessment = _assessmentViewModelFactory.Create(analytics.Assessment);
+                    assessment.AssessmentCreatorId = username;
+                    assessment.SetName = q.FirstOrDefault()?.SetName;
+                    assessment = await _analyticsBusiness.SaveAssessment(assessment);
 
-                await _analyticsBusiness.SaveAnalyticQuestions(questions);
+                    List<AnalyticQuestionAnswer> questions = (_questionViewModelFactory.Create(q.AsQueryable())).ToList();
+                    questions.ForEach(x => x.AssessmentId = assessment.Assessment_Id);
+                    questions.Where(x => x.AnswerText == null).ToList().ForEach(x => x.AnswerText = "U");
+
+                    await _analyticsBusiness.SaveAnalyticQuestions(questions);
+                }
+                
                 return Ok(new { message = "Analytics data saved" });
             }
             catch (Exception ex)
