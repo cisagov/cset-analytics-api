@@ -39,5 +39,6 @@ namespace CsetAnalytics.DomainModels.Models
         public string Assets { get; set; }
 
         public string Size { get; set; }
+        public string SetName { get; set; }
     }
 }
