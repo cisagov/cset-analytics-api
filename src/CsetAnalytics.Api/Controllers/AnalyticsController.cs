@@ -81,7 +81,6 @@ namespace CsetAnalytics.Api.Controllers
                     assessment.AssessmentCreatorId = username;
                     assessment.SetName = q.FirstOrDefault()?.SetName;
                     assessment = await _analyticsBusiness.SaveAssessment(assessment);
-
                     List<AnalyticQuestionAnswer> questions = (_questionViewModelFactory.Create(q.AsQueryable())).ToList();
                     questions.ForEach(x => x.AssessmentId = assessment.Assessment_Id);
                     questions.Where(x => x.AnswerText == null).ToList().ForEach(x => x.AnswerText = "U");

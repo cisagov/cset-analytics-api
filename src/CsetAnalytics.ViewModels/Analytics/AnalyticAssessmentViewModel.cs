@@ -18,5 +18,6 @@ namespace CsetAnalytics.ViewModels
         public string IndustryName { get; set; }
         public string Assets { get; set; }
         public string Size { get; set; }
+        public string Mode { get; set; }
     }
 }
