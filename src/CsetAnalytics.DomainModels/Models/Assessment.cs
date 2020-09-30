@@ -40,5 +40,7 @@ namespace CsetAnalytics.DomainModels.Models
 
         public string Size { get; set; }
         public string SetName { get; set; }
+        public string Mode { get; set; }
+
     }
 }
