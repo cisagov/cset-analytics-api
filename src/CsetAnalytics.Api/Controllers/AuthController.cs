@@ -75,7 +75,7 @@ namespace CsetAnalytics.Api.Controllers
 
             var response = await cognito.AdminInitiateAuthAsync(request);
             var expireDate = DateTime.Now.AddSeconds(response.AuthenticationResult.ExpiresIn);
-            
+
             return Ok(new
             {
                 id_token = response.AuthenticationResult.IdToken,

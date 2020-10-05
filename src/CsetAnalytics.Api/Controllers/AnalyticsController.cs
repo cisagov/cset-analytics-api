@@ -87,7 +87,7 @@ namespace CsetAnalytics.Api.Controllers
 
                     await _analyticsBusiness.SaveAnalyticQuestions(questions);
                 }
-                
+
                 return Ok(new { message = "Analytics data saved" });
             }
             catch (Exception ex)

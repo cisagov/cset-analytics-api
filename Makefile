@@ -106,3 +106,7 @@ mongo_dump:
 # target: mongo_restore - loads latest dump file from scripts/data/db_dumps/latest.dump
 mongo_restore:
 	docker exec -i pca-mongodb sh -c 'mongorestore --host mongodb --port 27017 -u ${DB_USER} -p ${DB_PW} --authenticationDatabase admin -d pca_data_dev --archive' < src/scripts/data/db_dumps/latest.dump
+
+lint:
+	pre-commit autoupdate
+	pre-commit run --all-files
