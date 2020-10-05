@@ -31,7 +31,7 @@ namespace CsetAnalytics.DomainModels.Models
 
         public int SectorId { get; set; }
         public string SectorName { get; set; }
-      
+
         public int IndustryId { get; set; }
         public string IndustryName { get; set; }
 

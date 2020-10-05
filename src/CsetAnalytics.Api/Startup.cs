@@ -112,7 +112,7 @@ namespace CsetAnalytics.Api
             app.UseCors("AllowAll");
             app.UseAuthentication();
             app.UseAuthorization();
-           
+
 
             app.UseEndpoints(endpoints =>
             {

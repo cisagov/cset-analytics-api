@@ -24,9 +24,9 @@ namespace CsetAnalytics.DomainModels
                 CreateCollection(database, "analytics_questionanswer");
                 CreateCollection(database, "sector_industries");
             }
-            
+
         }
-        
+
         private static void CreateCollection(IMongoDatabase database, string collectionName)
         {
             var filter = new BsonDocument("name", collectionName);
@@ -40,14 +40,14 @@ namespace CsetAnalytics.DomainModels
                     SeedSectorIndustries(database);
                 }
             }
-           
+
         }
 
         private static void SeedSectorIndustries(IMongoDatabase database)
         {
             IMongoCollection<Sector> collection = database.GetCollection<Sector>("sector_industries");
 
-           
+
             Industry[] sector1Industries = { new Industry() { IndustryId = 1, IndustryName = "Other" },
                                              new Industry() { IndustryId = 78, IndustryName = "Basic Chemicals" },
                                              new Industry() { IndustryId = 79, IndustryName = "Specialty Products" },
@@ -224,9 +224,9 @@ namespace CsetAnalytics.DomainModels
                 new Sector() { SectorName = "Transportation Systems Sector", SectorId = "15", Industries = new List<Industry>(sector15Industries) },
                 new Sector() { SectorName = "Water and Wastewater Systems Sector", SectorId = "16", Industries = new List<Industry>(sector16Industries) }
             };
-    
+
             collection.InsertMany(Sectors);
-           
+
         }
     }
 }
