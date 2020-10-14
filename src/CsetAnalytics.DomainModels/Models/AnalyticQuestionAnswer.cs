@@ -42,5 +42,7 @@ namespace CsetAnalytics.DomainModels.Models
         public int SubCategoryId { get; set; }
         public string SubCategoryText { get; set; }
         public string SetName { get; set; }
+        public string Industry { get; set; }
+        public string Sector { get; set; }
     }
 }

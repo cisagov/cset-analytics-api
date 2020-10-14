@@ -36,6 +36,5 @@ namespace CsetAnalytics.Business.Analytics
             await _context.Assessments.InsertOneAsync(assessment);
             return assessment;
         }
-
     }
 }
