@@ -9,6 +9,7 @@ using CsetAnalytics.DomainModels.Models;
 using Microsoft.AspNetCore.Mvc;
 using CsetAnalytics.ViewModels;
 using CsetAnalytics.Interfaces.Analytics;
+using CsetAnalytics.Interfaces.Dashboard;
 using CsetAnalytics.Interfaces.Factories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -82,7 +83,12 @@ namespace CsetAnalytics.Api.Controllers
                     assessment.SetName = q.FirstOrDefault()?.SetName;
                     assessment = await _analyticsBusiness.SaveAssessment(assessment);
                     List<AnalyticQuestionAnswer> questions = (_questionViewModelFactory.Create(q.AsQueryable())).ToList();
-                    questions.ForEach(x => x.AssessmentId = assessment.Assessment_Id);
+                    questions.ForEach(x =>
+                    {
+                        x.AssessmentId = assessment.Assessment_Id;
+                        x.Industry = assessment.IndustryName;
+                        x.Sector = assessment.SectorName;
+                    });
                     questions.Where(x => x.AnswerText == null).ToList().ForEach(x => x.AnswerText = "U");
 
                     await _analyticsBusiness.SaveAnalyticQuestions(questions);
@@ -95,5 +101,7 @@ namespace CsetAnalytics.Api.Controllers
                 return BadRequest(new { message = $"Analytics information was not saved" });
             }
         }
+
+       
     }
 }

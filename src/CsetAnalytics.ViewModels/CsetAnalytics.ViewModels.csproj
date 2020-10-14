@@ -8,4 +8,8 @@
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CsetAnalytics.DomainModels\CsetAnalytics.DomainModels.csproj" />
+  </ItemGroup>
+
 </Project>

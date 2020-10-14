@@ -29,7 +29,7 @@ namespace CsetAnalytics.DomainModels
         {
             get
             {
-                return _database.GetCollection<Assessment>(_settings.AssessmentCollectionName).AsQueryable<Assessment>();
+                return _database.GetCollection<Assessment>(_settings.AssessmentCollectionName).AsQueryable();
             }
         }
 
@@ -45,7 +45,7 @@ namespace CsetAnalytics.DomainModels
         {
             get
             {
-                return _database.GetCollection<AnalyticQuestionAnswer>(_settings.AnalyticQuestionAnswerCollectionName).AsQueryable<AnalyticQuestionAnswer>();
+                return _database.GetCollection<AnalyticQuestionAnswer>(_settings.AnalyticQuestionAnswerCollectionName).AsQueryable();
             }
         }
 
@@ -54,6 +54,22 @@ namespace CsetAnalytics.DomainModels
             get
             {
                 return _database.GetCollection<AnalyticQuestionAnswer>(_settings.AnalyticQuestionAnswerCollectionName);
+            }
+        }
+
+        public IMongoQueryable<Sector> SectorsLinq
+        {
+            get
+            {
+                return _database.GetCollection<Sector>(_settings.SectorIndustriesCollectionName).AsQueryable();
+            }
+        }
+
+        public IMongoCollection<Sector> Sectors
+        {
+            get
+            {
+                return _database.GetCollection<Sector>(_settings.SectorIndustriesCollectionName);
             }
         }
 

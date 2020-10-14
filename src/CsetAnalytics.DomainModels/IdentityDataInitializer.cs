@@ -72,6 +72,7 @@ namespace CsetAnalytics.DomainModels
             Industry[] sector3Industries = { new Industry() { IndustryId = 11, IndustryName = "Other" },
                                              new Industry() { IndustryId = 12, IndustryName = "Telecommunications" },
                                              new Industry() { IndustryId = 13, IndustryName = "Wireless Communications Service Providers" },
+                                             new Industry() { IndustryId = 83, IndustryName = "Broadcasting"}, 
                                              new Industry() { IndustryId = 84, IndustryName = "Cable" },
                                              new Industry() { IndustryId = 85, IndustryName = "Satellite" },
                                              new Industry() { IndustryId = 86, IndustryName = "Wireline" }
