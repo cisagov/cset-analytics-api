@@ -52,11 +52,11 @@ namespace CsetAnalytics.Api.Controllers
         [Authorize]
         [HttpGet]
         [Route("GetAssessmentList")]
-        public async Task<IActionResult> GetAssessmentList()
+        public async Task<IActionResult> GetAssessmentList(string id)
         {
             try
             { 
-                List<Assessment> assessmentData = await _dashboardBusiness.GetUserAssessments("0");
+                List<Assessment> assessmentData = await _dashboardBusiness.GetUserAssessments(id);
                 var assessment_count = assessmentData.Count();
                 return Ok(new AssessmentData { Items = assessmentData, Total_count = assessment_count});
             }

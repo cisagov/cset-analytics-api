@@ -156,9 +156,9 @@ namespace CsetAnalytics.Business.Dashboard
             return new Series() { name = MyAssesmentAverageName, value = average * 100 };
         }
 
-        public async Task<List<Assessment>> GetUserAssessments(string userId = "0")
+        public async Task<List<Assessment>> GetUserAssessments(string userId)
         {
-            var assessments = await _context.Assessments.Find(a => true).ToListAsync();
+            var assessments = await _context.Assessments.Find(a => a.AssessmentCreatorId == userId).ToListAsync();
             return assessments;
         }
 
@@ -176,7 +176,7 @@ namespace CsetAnalytics.Business.Dashboard
             var categoryList = new List<string>();
             var myQuestions = await _context.Questions.Find(x=>x.AssessmentId == assessmentId).ToListAsync();
             var questions = await _context.Questions.Find(x=>true).ToListAsync();
-            if (sectorIndustry.Length > 1)
+            if (sectorIndustry.Length > 1 && sectorIndustry[1] != "All Sectors")
                 questions = questions.Where(x => (x.Sector == sectorIndustry[0] && x.Industry == sectorIndustry[1]) || x.AssessmentId==assessmentId).ToList();
             var assessments = from q in questions
                 group q by q.AssessmentId 
@@ -198,7 +198,7 @@ namespace CsetAnalytics.Business.Dashboard
                         AssessmentId = assessment.Key.ToString(), 
                         CategoryName = category.Key, 
                         AnsweredYes = questionList.Count(x => x.AnswerText == "Y"),
-                        NormalizedYes = ((double)questionList.Count(x => x.AnswerText == "Y")/questionList.Count())*100,
+                        NormalizedYes = Math.Round(((double)questionList.Count(x => x.AnswerText == "Y")/questionList.Count())*100, 1),
                         Total = questionList.Count()
                     });
                 }
@@ -220,7 +220,7 @@ namespace CsetAnalytics.Business.Dashboard
                     var max = statByCat.MaxBy(x => x.NormalizedYes).Take(1).FirstOrDefault();
                     graphData.Max.Add(new ScatterPlot {x = max.NormalizedYes, y = c});
                     graphData.Median.Add(new MedianScatterPlot
-                        {x = GetMedian(statByCat.Select(x => x.NormalizedYes).ToList()), y = c});
+                        {x = Math.Round(GetMedian(statByCat.Select(x => x.NormalizedYes).ToList()),1), y = c});
                     var answeredYes = statByCat.FirstOrDefault(x => x.AssessmentId == assessmentId);
                     graphData.BarData.Values.Add(answeredYes.NormalizedYes);
                     graphData.BarData.Labels.Add(c);
