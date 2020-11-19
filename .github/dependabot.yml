@@ -3,12 +3,14 @@ updates:
 - package-ecosystem: nuget
   directory: "/"
   schedule:
-    interval: daily
-    time: "11:00"
+    interval: weekly
+    day: monday
+    time: "16:00"
   open-pull-requests-limit: 10
 - package-ecosystem: docker
   directory: "/"
   schedule:
-    interval: daily
-    time: "11:00"
+    interval: weekly
+    day: monday
+    time: "16:00"
   open-pull-requests-limit: 10
