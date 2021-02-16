@@ -9,6 +9,8 @@ using Amazon.CognitoIdentityProvider.Model;
 using Microsoft.AspNetCore.Mvc;
 using CsetAnalytics.DomainModels.Models;
 using Microsoft.Extensions.Options;
+using System.Net;
+
 
 namespace CsetAnalytics.Api.Controllers
 {
@@ -73,15 +75,23 @@ namespace CsetAnalytics.Api.Controllers
             request.AuthParameters.Add("USERNAME", user.Username);
             request.AuthParameters.Add("PASSWORD", user.Password);
 
-            var response = await cognito.AdminInitiateAuthAsync(request);
-            var expireDate = DateTime.Now.AddSeconds(response.AuthenticationResult.ExpiresIn);
-
-            return Ok(new
+            try
             {
-                id_token = response.AuthenticationResult.IdToken,
-                expires_at = expireDate,
-                username = user.Username
-            });
+                var response = await cognito.AdminInitiateAuthAsync(request);
+                var expireDate = DateTime.Now.AddSeconds(response.AuthenticationResult.ExpiresIn);
+
+                return Ok(new
+                {
+                    id_token = response.AuthenticationResult.IdToken,
+                    expires_at = expireDate,
+                    username = user.Username
+                });
+            }catch(Exception e)
+            {
+                var result = Content(e.Message);
+                HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return result;
+            }
         }
     }
 }
